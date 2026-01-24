@@ -1,0 +1,5 @@
+# ignore datasets
+data/
+
+# ignore venv
+.venv/
