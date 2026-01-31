@@ -1,35 +1,55 @@
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 
 from preprocess import run_preprocessing
 from load_data import load_train_data
 
-def train_model():
+def train_lm(x_train, y_train):
+       lm = LinearRegression()
+       lm.fit(x_train, y_train)
+       return lm
 
+def train_rf(x_train, y_train):
+       rf = RandomForestRegressor(n_estimators=300, max_depth=20, min_samples_split=5, random_state=5)
+       rf.fit(x_train, y_train)
+       return rf
+
+def train_models():
+
+       # split data into training and testing set
        df_train = load_train_data()
-
        X, y = run_preprocessing(df_train)
+       x_train, x_test, y_train, y_test = train_test_split(X, y, train_size=0.8, test_size=0.2, random_state=5)
 
-       x_train, x_test, y_train, y_test = train_test_split(X, y, train_size=0.8, test_size=0.2, random_state=1)
+       # training basic linear model
+       linear_model = train_lm(x_train, y_train)
 
-       model = LinearRegression()
+       predict_lm = linear_model.predict(x_test)
+       rmse_linear_model = np.sqrt(mean_squared_error(y_test, predict_lm))
 
-       model.fit(x_train, y_train)
+       # checking basic linear stats
+       print('Linear Regressor Train score: ', linear_model.score(x_train, y_train))
+       print('Linear Regressor Test score: ', linear_model.score(x_test, y_test))
+       print('Linear Regressor RMSE: ', rmse_linear_model)
 
-       y_predict = model.predict(x_test)
-       rmse = np.sqrt(mean_squared_error(y_test, y_predict))
+       # training random forrest
+       forest = train_rf(x_train, y_train)
 
-       print('Train score:')
-       print(model.score(x_train, y_train))
+       predict_forest = forest.predict(x_test)
+       rmse_forest = np.sqrt(mean_squared_error(y_test, predict_forest))
 
-       print('Test score:')
-       print(model.score(x_test, y_test))
+       # checkiking random forest stats
+       print('Forest Train score: ', forest.score(x_train, y_train))
+       print('Forest Test score: ', forest.score(x_test, y_test))
+       print('Forest RMSE: ', rmse_forest)
 
-       print('RMSE:')
-       print(rmse)
-
+       # trying a mix of the two models
+       ensemble_y = 0.5*predict_forest + 0.5*predict_lm
+       rmse_ensemble = np.sqrt(mean_squared_error(y_test, ensemble_y))
+       print('Ensemble RMSE: ', rmse_ensemble)
 
 if __name__ == '__main__':
-       train_model()
+       train_models()
