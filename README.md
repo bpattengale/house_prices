@@ -20,7 +20,7 @@ An initial analysis of the data was done in [notebooks/data_exploration.ipynb](h
 
 So far I have done a bit of feature engineering in the [src/preprocess.py](https://github.com/bpattengale/house_prices/blob/main/src/preprocess.py) to pick out some features to train the simple models. I will be adding more features later on for better training. 
 
-The first models I have added are a simple linear regression model and a random forest regressor both from sklearn in [src/train_sklearn.py](https://github.com/bpattengale/house_prices/blob/main/src/train_sklearn.py) and also a weighted mix of the two. So far it looks like the random forest model is dramatically overfitting the data so I will have to do some tuning to improve the accuracy. New models I have added are the Ridge, Lasso, and ElasticNet also from sklearn. So far they appear to be describing the data well but will need tuning of parameters to maxamize accuracy.
+The first models I have added are a simple linear regression model and a random forest regressor both from sklearn in [src/train_sklearn.py](https://github.com/bpattengale/house_prices/blob/main/src/train_sklearn.py) and also a weighted mix of the two. So far it looks like the random forest model is dramatically overfitting the data so I will have to do some tuning to improve the accuracy. Additional linear models I have added are Ridge, Lasso, and ElasticNet also from sklearn. Tuning of these models was done in the [notebooks/model_tuning.ipynb](https://github.com/bpattengale/house_prices/blob/main/notebooks/model_tuning.ipynb) and parameter sets were updated in the models file in src.
 
 ## TODO
 
