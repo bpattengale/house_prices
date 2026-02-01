@@ -1,11 +1,9 @@
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
-from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 
-from preprocess import run_preprocessing
 from load_data import load_train_data
+from preprocess import run_preprocessing
 from models import train_linear_model, train_RF, train_lasso, train_elasticnet, train_ridge
 
 
