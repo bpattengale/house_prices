@@ -1,6 +1,8 @@
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
+from sklearn.linear_model import RidgeCV
+from sklearn.preprocessing import StandardScaler
 
 from load_data import load_train_data
 from preprocess import run_preprocessing
@@ -10,7 +12,7 @@ from models import train_linear_model, train_RF, train_lasso, train_elasticnet, 
 def train_simple_models():
 
        # split data into training and testing set
-       df_train = load_train_data()
+       df_train = load_train_data('./data/train.csv')
        X, y = run_preprocessing(df_train)
        x_train, x_test, y_train, y_test = train_test_split(X, y, train_size=0.8, test_size=0.2, random_state=5)
 
@@ -43,9 +45,14 @@ def train_simple_models():
 def train_further_models():
 
        # split data into training and testing set
-       df_train = load_train_data()
+       df_train = load_train_data('./data/train.csv')
        X, y = run_preprocessing(df_train)
        x_train, x_test, y_train, y_test = train_test_split(X, y, train_size=0.8, test_size=0.2, random_state=5)
+
+       # scale input data
+       scaler = StandardScaler()
+       x_train = scaler.fit_transform(x_train)
+       x_test = scaler.transform(x_test)
 
        # train ridge model
        ridge = train_ridge(x_train, y_train)
@@ -65,6 +72,7 @@ def train_further_models():
        print('ElasticNet test score: ', elastic_net.score(x_test, y_test))
        print('ElasticNet RMSE: ', np.sqrt(mean_squared_error(y_test, elastic_net.predict(x_test))))
 
+
 if __name__ == '__main__':
-       train_simple_models()
+       #train_simple_models()
        train_further_models()
